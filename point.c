@@ -40,6 +40,30 @@ struct info read_instructions() {
 
 }
 
+void set_sub_ptr(struct Point* self)
+{
+    
+    unsigned long long adr = (unsigned long long)self;
+
+    char syscall[] = "gcc ./sub.c -c -DADDRESS=                              ";
+
+    sprintf(syscall + 25, "%llu", adr);
+
+    system(syscall);
+
+    system("objdump -d ./sub.o | awk '/<_sub>/,/^$/' > ./dump.txt");
+
+
+    struct info inf = read_instructions();
+
+    self->sub_memory = inf.mem;
+    self->sub = (struct Point (*)(struct Point*))self->sub_memory;
+    self->sub_size = inf.size;
+
+}
+
+
+
 void set_add_ptr(struct Point* self)
 {
     
@@ -60,7 +84,6 @@ void set_add_ptr(struct Point* self)
     self->add = (struct Point (*)(struct Point*))self->add_memory;
     self->add_size = inf.size;
 
-    system("rm ./add.o ./dump.txt ./code.txt");
 }
 
 
@@ -73,7 +96,9 @@ void construct(struct Point* self, int x, int y)
     self->y = y;
 
     set_add_ptr(self);    
+    set_sub_ptr(self);    
    
+    system("rm ./*.txt ./*.o");
 }
 
 void destruct(struct Point* self)
@@ -87,6 +112,9 @@ void destruct(struct Point* self)
     self->add_size = 0;
 
 
+    munmap(self->sub_memory, self->sub_size);
+    self->sub_memory = NULL;
+    self->sub_size = 0;
 }
 
 

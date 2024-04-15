@@ -8,6 +8,10 @@ struct Point
     struct Point(*add)(struct Point*);
     void* add_memory;
     int add_size;
+
+    struct Point(*sub)(struct Point*);
+    void* sub_memory;
+    int sub_size;
 };
 
 

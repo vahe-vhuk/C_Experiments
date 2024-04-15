@@ -26,18 +26,18 @@ int main()
 
     struct Point ob4 = ob1.add(&ob2);
     struct Point ob5 = ob1.add(&ob3);
-    struct Point ob6 = ob2.add(&ob3);
-    struct Point ob7 = ob3.add(&ob1);
-    struct Point ob8 = ob2.add(&ob2);
+    struct Point ob6 = ob2.sub(&ob3);
+    struct Point ob7 = ob3.sub(&ob1);
+    struct Point ob8 = ob2.sub(&ob2);
 
     print("ob1 = ", &ob1);
     print("ob2 = ", &ob2);
     print("ob3 = ", &ob3);
     print("ob1 + ob2 = ", &ob4);
     print("ob1 + ob3 = ", &ob5);
-    print("ob2 + ob3 = ", &ob6);
-    print("ob3 + ob1 = ", &ob7);
-    print("ob2 + ob2 = ", &ob8);
+    print("ob2 - ob3 = ", &ob6);
+    print("ob3 - ob1 = ", &ob7);
+    print("ob2 - ob2 = ", &ob8);
 
 
     destruct(&ob1);
