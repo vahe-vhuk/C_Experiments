@@ -12,6 +12,7 @@ void copy_from(struct vector* rhv)
 
     self->_size = rhv->_size;
     self->_cap = rhv->_cap;
+    self->_arr = self->allocate(self->_cap, sizeof(int));
 
     for (int i = 0; i < self->_size; ++i) {
         self->_arr[i] = rhv->_arr[i];

@@ -43,7 +43,7 @@ int main()
     destruct(&ob1);
     destruct(&ob2);
     destruct(&ob3);
-    destruct(&ob4);
+    // destruct(&ob4);
 
     return 0;
 }

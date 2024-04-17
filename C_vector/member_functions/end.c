@@ -1,6 +1,6 @@
 #include "../vector.h"
 
-int* front()
+int* end()
 {
     struct vector* self = (struct vector*)ADDRESS;
 

@@ -43,6 +43,9 @@ struct vector
     // void (*resize)(int);
 
     void (*swap)(struct vector*);
+
+    int* (*allocate)(int, int);
+    void (*free)(void*);
 };
 
 

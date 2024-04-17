@@ -9,8 +9,9 @@ void clear()
     self->_cap = 0;
 
     if (self->_arr) {
-        free(self->_arr);
+        self->free(self->_arr);
     }
+    self->_arr = NULL;
 
 
   

@@ -1,5 +1,6 @@
 #include "../vector.h"
-
+#include <unistd.h>
+#include <sys/mman.h>
 
 void ctor(int n)
 {
@@ -9,5 +10,5 @@ void ctor(int n)
 
     self->_size = n;
     self->_cap = n;
-    self->_arr = (int*)calloc(n, sizeof(int));
+    self->_arr = self->allocate(n, sizeof(int));
 }

@@ -10,7 +10,7 @@ syscall2 = f"objdump -d ./{fname}.o | awk '/<_{fname}>/,/^$/' > ./dump.txt"
 os.system(syscall1)
 os.system(syscall2)
 
-syms = "123456789abcdef"
+syms = "0123456789abcdef"
 
 with open("dump.txt", "r") as f:
     text = f.read()

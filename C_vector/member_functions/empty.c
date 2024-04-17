@@ -4,5 +4,5 @@ int empty()
 {
     struct vector* self = (struct vector*)ADDRESS;
 
-    return !self->_arr;
+    return self->_size == 0;
 }

@@ -26,16 +26,16 @@ void* make_member_function(void* self, const char* fname) {
     while (fscanf(file, "%d", &tmp) == 1) {
         buffer[ind++] = tmp;
     }    
-    void* x = mmap(NULL, ind + 5, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANON | MAP_PRIVATE, -1, 0);
+    void* x = mmap(NULL, ind + 5, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANON | MAP_SHARED, -1, 0);
     if (x == NULL) {
         printf("error");
     }
 
 
-    // int* p = (int*)x;
-    // *p = ind + 5;
-
-    // x = p + 1;
+    int* p = (int*)x;
+    *p = ind + 5;
+    ++p;
+    x = p;
 
     memcpy(x, buffer, ind + 1);
 
@@ -58,6 +58,11 @@ void delete_member_function(void* ptr)
 }
 
 
+int* alloc(int cnt, int size)
+{
+    return (int*)calloc(cnt, size);
+}
+
 
 void construct(struct vector* self)
 {
@@ -65,44 +70,26 @@ void construct(struct vector* self)
     self->_cap = 0;
     self->_arr = NULL;
     
-    self->ctor = (void(*)(int))make_member_function(self, "ctor");
-    printf("1");    
-    self->dtor = (void(*)())make_member_function(self, "dtor");
-    printf("1");    
+    self->ctor = (void(*)(int))make_member_function(self, "ctor");    
+    self->dtor = (void(*)())make_member_function(self, "dtor");    
     self->copy_from = (void(*)(struct vector*))make_member_function(self, "copy_from");
+    self->move_from = (void(*)(struct vector*))make_member_function(self, "move_from");    
+    self->at = (int*(*)(int))make_member_function(self, "at");    
+    self->front = (int*(*)())make_member_function(self, "front");    
+    self->back = (int*(*)())make_member_function(self, "back");    
+    self->begin = (int*(*)())make_member_function(self, "begin");    
+    self->end = (int*(*)())make_member_function(self, "end");    
+    self->empty = (int(*)())make_member_function(self, "empty");    
+    self->size = (int(*)())make_member_function(self, "size");    
+    self->capacity = (int(*)())make_member_function(self, "capacity");    
+    self->reserve = (void(*)(int))make_member_function(self, "reserve");    
+    self->clear = (void(*)())make_member_function(self, "clear");    
+    self->push_back = (void(*)(int))make_member_function(self, "push_back");    
+    self->pop_back = (void(*)())make_member_function(self, "pop_back");    
+    self->swap = (void(*)(struct vector*))make_member_function(self, "swap");    
 
-    printf("1");    
-    
-    self->move_from = (void(*)(struct vector*))make_member_function(self, "move_from");
-    printf("1");    
-    self->at = (int*(*)(int))make_member_function(self, "at");
-    printf("1");    
-    self->front = (int*(*)())make_member_function(self, "front");
-    printf("1");    
-    self->back = (int*(*)())make_member_function(self, "back");
-    printf("1");    
-    self->begin = (int*(*)())make_member_function(self, "begin");
-    printf("1");    
-    self->end = (int*(*)())make_member_function(self, "end");
-    printf("1");    
-    self->empty = (int(*)())make_member_function(self, "empty");
-    printf("1");    
-    self->size = (int(*)())make_member_function(self, "size");
-    printf("1");    
-    self->capacity = (int(*)())make_member_function(self, "capacity");
-    printf("1");    
-    self->reserve = (void(*)(int))make_member_function(self, "reserve");
-    printf("1");    
-    self->clear = (void(*)())make_member_function(self, "clear");
-    printf("1");    
-    self->push_back = (void(*)(int))make_member_function(self, "push_back");
-    printf("1");    
-    self->pop_back = (void(*)())make_member_function(self, "pop_back");
-    printf("1");    
-    self->swap = (void(*)(struct vector*))make_member_function(self, "swap");
-    printf("1");    
-    
-    
+    self->allocate = alloc;    
+    self->free = free;    
     
 
 
