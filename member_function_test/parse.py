@@ -1,3 +1,17 @@
+import sys
+import os
+
+pointer = sys.argv[1]
+fname = sys.argv[2]
+
+syscall1 = f"gcc ./{fname}.c -c -DADDRESS={pointer}"
+syscall2 = f"objdump -d ./{fname}.o | awk '/<_{fname}>/,/^$/' > ./dump.txt"
+
+os.system(syscall1)
+os.system(syscall2)
+
+
+
 with open("dump.txt", "r") as f:
     text = f.read()
 

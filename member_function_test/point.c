@@ -11,9 +11,14 @@ struct info
     void* mem;
 };
 
-struct info read_instructions() {
+struct info make_member_function(void* self, const char* fname) {
 
-    system("python3 parse.py");
+    char syscall[] = "python3 parse.py                                           ";
+
+    unsigned long long adr = (unsigned long long)self;
+    sprintf(syscall + 17, "%llu %s", adr, fname);
+
+    system(syscall);
 
     FILE* file = fopen("./code.txt", "r");
 
@@ -43,18 +48,18 @@ struct info read_instructions() {
 void set_sub_ptr(struct Point* self)
 {
     
-    unsigned long long adr = (unsigned long long)self;
+    // unsigned long long adr = (unsigned long long)self;
 
-    char syscall[] = "gcc ./sub.c -c -DADDRESS=                              ";
+    // char syscall[] = "gcc ./sub.c -c -DADDRESS=                              ";
 
-    sprintf(syscall + 25, "%llu", adr);
+    // sprintf(syscall + 25, "%llu", adr);
 
-    system(syscall);
+    // system(syscall);
 
-    system("objdump -d ./sub.o | awk '/<_sub>/,/^$/' > ./dump.txt");
+    // system("objdump -d ./sub.o | awk '/<_sub>/,/^$/' > ./dump.txt");
 
 
-    struct info inf = read_instructions();
+    struct info inf = make_member_function(self, "sub");
 
     self->sub_memory = inf.mem;
     self->sub = (struct Point (*)(struct Point*))self->sub_memory;
@@ -62,23 +67,10 @@ void set_sub_ptr(struct Point* self)
 
 }
 
-
-
 void set_add_ptr(struct Point* self)
 {
-    
-    unsigned long long adr = (unsigned long long)self;
 
-    char syscall[] = "gcc ./add.c -c -DADDRESS=                              ";
-
-    sprintf(syscall + 25, "%llu", adr);
-
-    system(syscall);
-
-    system("objdump -d ./add.o | awk '/<_add>/,/^$/' > ./dump.txt");
-
-
-    struct info inf = read_instructions();
+    struct info inf = make_member_function(self, "add");
 
     self->add_memory = inf.mem;
     self->add = (struct Point (*)(struct Point*))self->add_memory;
